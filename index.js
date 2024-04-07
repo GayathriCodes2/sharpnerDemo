@@ -1,44 +1,54 @@
-// Add the Edit Button:
-
-
-// Implement the code as in video but with one extra 'Edit' button in 'li'
-
 const form = document.querySelector('form');
-
+const filter = document.getElementById("filter");
 const fruit = document.querySelector('.fruits');
-const li=document.querySelector('li');
-for(let i=0;i<li.length;i++){
-  const edit = document.createElement('button');
-  edit.className = 'edit';
-  const txt = document.createTextNode('edit')
-  edit.appendChild(txt)
-  li[i].appendChild(edit)
-}
-form.addEventListener('submit',function(event){
-  event.preventDefault();
-  const fruitToAdd = document.getElementById('fruit-to-add');
-  const newLi = document.createElement('li');
+const liElements = document.querySelectorAll('li');
+const des = document.createElement('input')
+des.type='text';
+des.id='desc'
+const btn = document.querySelector('button')
+form.insertBefore(des,btn);
 
-  
- // newLi.innerHTML = fruitToAdd.value + '<button class="delete-btn">x</button'
-
-  
-  const newText = document.createTextNode(fruitToAdd.value);
-  newLi.appendChild(newText);
-  newLi.className = 'fruit';
-
-  const delbtn = document.createElement('button');
-  const delbtntext=document.createTextNode('x');
-  delbtn.appendChild(delbtntext)
-  delbtn.className = 'delete-btn';
-  newLi.appendChild(delbtn);
-  fruit.appendChild(newLi)
-  
+filter.addEventListener("keyup",function(event){
+    const inp = event.target.value.toLowerCase();
+    const item = document.getElementsByClassName("fruit");
+    for(let i=0;i<item.length;i++){
+        const curr = item[i].firstChild.textContent.toLowerCase();
+        if(curr.indexOf(inp)===-1){
+            item[i].style.display = "none"
+        }else{
+            item[i].style.display ="flex"
+        }
+    }
 })
 
-fruit.addEventListener('click',function(event){
-  if(event.target.classList.contains('delete-btn')){
-    const del = event.target.parentElement;
-    fruit.removeChild(del)
-  }
+form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const fruitToAdd = document.getElementById('fruit-to-add');
+    const descInp = document.getElementById("desc")
+    const newLi = document.createElement('li');
+    const p = document.createElement('p');
+   
+
+    // newLi.innerHTML = fruitToAdd.value + '<button class="delete-btn">x</button'
+
+
+    const newText = document.createTextNode(fruitToAdd.value);
+    
+    const newdesc = document.createTextNode(descInp.value);
+    
+    p.appendChild(newdesc)
+    p.style.fontStyle='italic'
+    newLi.appendChild(newText);
+    newLi.appendChild(p)
+    newLi.className = 'fruit';
+
+
+
+    const delbtn = document.createElement('button');
+    const delbtntext = document.createTextNode('x');
+    delbtn.appendChild(delbtntext)
+    delbtn.className = 'delete-btn';
+    newLi.appendChild(delbtn);
+    fruit.appendChild(newLi)
+
 })
