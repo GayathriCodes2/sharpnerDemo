@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body style="margin: 0">
+    <form onsubmit="handleFormSubmit(event)">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" />
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" />
+        <label for="phone">Phone No</label>
+        <input type="tel" name="phone" id="phone" />
+        <ul></ul>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+<script>
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        const existingDetails = localStorage.getItem('User Details');
+        const list = existingDetails ? JSON.parse(existingDetails) : [];
+        const a = document.getElementById('username').value;
+        const b = document.getElementById('email').value;
+        const c = document.getElementById('phone').value;
+
+
+
+        const userDetails = {
+            username: a, email: b, phone: c
+        }
+
+        const ul = document.querySelector('ul');
+        const li = document.createElement('li');
+        const btn = document.createElement('input');
+        btn.type = 'button';
+        btn.value = 'Delete';
+        const editbtn = document.createElement('button');
+        editbtn.textContent = 'Edit';
+        editbtn.id = 'edit';
+        li.textContent = `Username: ${userDetails.username}, Email: ${userDetails.email}, Phone: ${userDetails.phone}`
+        li.appendChild(editbtn)
+        li.appendChild(btn)
+        ul.appendChild(li)
+
+        editbtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            ul.removeChild(li);
+            const index = list.findIndex(user => user.username === userDetails.username && user.email === userDetails.email && user.phone === userDetails.phone);
+            if (index !== -1) {
+                list.splice(index, 1);
+                localStorage.setItem('User Details', JSON.stringify(list));
+            }
+            console.log("-------------", index)
+            document.querySelector('#username').value = index.username;
+            document.createElement('#email').value = index.email;
+            document.createElement('#phone').value = index.phone;
+        })
+
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+            ul.removeChild(li);
+            const index = list.findIndex(user => user.username === userDetails.username && user.email === userDetails.email && user.phone === userDetails.phone);
+            if (index !== -1) {
+                list.splice(index, 1);
+                localStorage.setItem('User Details', JSON.stringify(list));
+            }
+            console.log("-------------", event.target.value)
+        })
+
+
+
+        list.push(userDetails)
+        let userdetail = JSON.stringify(list);
+        localStorage.setItem('User Details', userdetail)
+    }
+
+</script>
+
+</html>

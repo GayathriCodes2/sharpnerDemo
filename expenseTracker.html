@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+</head>
+
+<body>
+    <form>
+        <label for="expenseamount">Expense amount: </label>
+        <input type="number" name="expenseamount" id="expenseamount"><br>
+        <label for="desc">Description: </label>
+        <input type="text" name="desc" id="desc"><br>
+        <label for="category">category: </label>
+        <select name="category" id="category">
+            <option value="movie">Movie</option>
+            <option value="fuel">Fuel</option>
+        </select><br>
+        <button>Add Expense</button>
+    </form>
+    <ul></ul>
+
+</body>
+<script>
+
+    let addbtn = document.querySelector('button')
+    let ul = document.querySelector('ul');
+
+    addbtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        let arr = JSON.parse(localStorage.getItem('users')) || [];
+        let amount = document.getElementById("expenseamount").value;
+        let desc = document.getElementById('desc').value;
+        let category = document.getElementById('category').value;
+        let li = document.createElement('li');
+
+        //Adding a item to a list
+        let ls = {
+            "amnt": amount,
+            "desc": desc,
+            "cate": category
+        }
+        arr.push(ls)
+        localStorage.setItem('users', JSON.stringify(arr))
+        li.innerHTML = `Expense amount: ${amount} Description: ${desc} Category: ${category} <button class="edit">Edit</button> <button class="delete">Delete</button>`;
+        ul.appendChild(li)
+
+        let dltbtn = li.querySelector(".delete")
+        //Deleting particular item from the list
+        dltbtn.addEventListener('click', () => {
+
+            let index = arr.indexOf(ls);
+            arr.splice(index, 1);
+            localStorage.setItem('users', JSON.stringify(arr));
+            ul.removeChild(li);
+        });
+
+         //Edit particular item from the list
+        let edtbtn = li.querySelector('.edit');
+        edtbtn.addEventListener('click', () => {
+            let index = arr.indexOf(ls);
+            console.log(index)
+            ul.removeChild(li);
+            document.getElementById("expenseamount").value = ls.amnt;
+            document.getElementById('desc').value = ls.desc;
+            document.getElementById('category').value = ls.cate;
+
+        })
+    })
+
+</script>
+
+</html>
