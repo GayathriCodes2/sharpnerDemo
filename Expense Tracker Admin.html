@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+  font-size:23px;
+  font-weight:"strong";
+}
+    </style>
+</head>
+<body>
+    <form>
+        <label for="price">Selling Price: </label>
+        <input type="number" name="price" id="price" class="price">
+        <label for="pname">Product Name: </label>
+        <input type="text" id="pname">
+        <label for="category">Choose Category: </label>
+      <select id="category">
+        <option value="electronic">Electronic</option>
+        <option value="skincare">Skin Care</option>
+        <option value="food">Food</option>
+        
+      </select>
+        <button>Add Product</button>
+    </form>
+    <h1>Products</h1>
+  <ul id="electronic">Electronic Product</ul>
+  <ul id="skincare">Skin Care Product</ul>
+  <ul id="food">Food Product</ul>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js/admin"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    window.addEventListener("DOMContentLoaded",()=>{
+        axios.get("https://crudcrud.com/api/c82b6c27fe4a44eb8de21a1391dc3978/admin")
+    .then((res)=>console.log(res.data))
+    .catch((e)=>console.log(e))
+    })
+    
+    const btn = document.querySelector("button");
+    btn.addEventListener("click",(e)=>{
+        e.preventDefault();     
+    const pname = document.getElementById("pname").value;
+    const price = document.getElementById("price").value;
+    const category = document.getElementById("category").value;
+    let obj ={pname, price, category};
+    axios.post("https://crudcrud.com/api/c82b6c27fe4a44eb8de21a1391dc3978/admin",obj)
+    .then((res)=>displayDetails(res.data))
+    .catch((e)=>console.log(e))
+})
+function displayDetails(products){
+    electronic = document.getElementById("electronic")
+    products.forEach(product => {
+        const categoryId = product.category;
+
+        const listItem = document.createElement("li");
+        listItem.textContent = `${product.pname} - ${product.price}`;
+
+        if (categoryId=="electronic") {
+
+            categoryList.appendChild(listItem);
+        }
+    });
+}
+    
+</script>
+</html>
