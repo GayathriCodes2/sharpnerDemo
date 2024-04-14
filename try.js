@@ -1,8 +1,6 @@
-present = [3,0,1]
-n = present.length;
-res = (n*(n+1))/2;
-sum = 0
-for(i=0;i<n;i++){
-    sum +=present[i]
+word = "sharpener"
+str=""
+for(let i=word.length-1;i>=0;i--){
+    str+=word[i]
 }
-console.log(res-sum)
+console.log(word===str)
